@@ -1,0 +1,256 @@
+# PROJETOS -> JOGO_MARIO -> HTML
+
+<!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+                <link rel="stylesheet" href="style.css">
+ 
+                <title>Jogo Mario</title>
+        </head>
+
+            <body>
+                <div class="game">
+                    <div class="game-board">
+                    
+                    
+                        <img src="cano.png" class="cano">
+                        <img src="mario.gif" class="mario">
+                        <img src="clouds.png" class="nuvem ">
+                        <img src="gif_moeda.gif" class="moeda">
+                    
+
+                            <div class="conteiner">
+                                <div id="demo"></div>
+                            </div>
+
+                            <p id="contador">
+                                <div class="borda"></div>
+                            </p>
+
+                           <script src="script.js"></script>
+                    </div>
+            </body>
+    </html>
+    
+    
+    
+# PROJETOS -> JOGO_MARIO -> CSS
+    
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #BD7E20;
+    
+}
+
+.game-board {
+    width: 100%;
+    height: 500px;
+    border-bottom: 15px solid #44B813;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden    ;
+    background: #C2D5D6;
+   
+}
+
+
+.cano {
+    position: absolute;
+    bottom: 0;
+    width: 80px;
+    animation: pipe-animation 1.5s infinite linear;
+}
+ 
+.rain {
+    position: relative;
+    width: 400px;
+    height: 1000px;
+    margin-top: 80px;
+    animation: cloud-animation 20s infinite linear;
+    opacity: 100%;
+    background: repeat-y;
+    margin-left: 69%;
+    margin-top: 70px;
+}
+
+.nuvem {
+    width: 400px;
+    height: 200px;
+    margin-left: 60%;
+    margin-top: 0px;
+    position: absolute;
+    animation: cloud-animation 20s infinite linear;
+}
+
+.moeda {
+    position: absolute;
+    animation: pipe-animation 1.5s infinite linear;
+    bottom: 150px;
+    width: 80px;
+}
+
+.mario {
+width: 150px;
+position: absolute;
+bottom: 0;
+}
+
+.jump{
+    animation: mario-jump 500ms ease-out;
+}
+
+#demo {
+    text-align: center;
+    margin-top: 220px;
+    text-transform: uppercase ;
+    font-size: 70px;
+    letter-spacing: 1px;
+    padding: 20px 0px;
+    color: red;
+    width: 40%;
+    margin-left: 380px;
+    position: absolute;
+}
+
+#contador {
+    position: absolute;
+    text-align: center;
+    margin-left: 70%;
+    height: 130px;
+    width: 300px;
+    background-color: #fff;
+    margin-top: 10px;
+    padding-top: 35px;
+    font-size: 50px;
+    letter-spacing: 10px;
+    border: dotted red;
+    opacity: 80%;
+}
+
+@keyframes pipe-animation {
+    from {
+    right: -80px;
+    }
+
+    to {
+    right: 100%;
+    }
+}
+
+@keyframes mario-jump {
+
+    0% {
+        bottom: 0px;
+    }
+
+    40% {
+        bottom: 180px;
+    }
+
+    50% {
+        bottom: 180px;
+    }
+
+    60% {
+        bottom: 180px;
+    }
+
+    100% {
+        bottom: 0px;
+    }
+
+
+}
+
+@keyframes cloud-animation {
+    from {
+    right: -400px;
+    }
+
+    to {
+    right: 110%;
+    }
+}
+
+
+
+
+# PROJETOS -> JOGO_MARIO -> JS
+
+const mario = document.querySelector('.mario');
+const cano = document.querySelector('.cano');
+const moeda = document.querySelector('.moeda')
+let contador = 0;
+
+
+
+    const jump = () => {
+        mario.classList.add('jump');
+
+    
+
+
+
+        setTimeout(() => {
+
+            mario.classList.remove('jump'); 
+
+        }, 500);
+}
+
+    const loop = setInterval(() =>{
+
+    contador += 1;
+
+    document.getElementById("contador").innerHTML = contador;
+
+        if ( contador >= 1500) {
+        
+            cano.style.animation = 'pipe-animation 1s infinite linear';
+            moeda.style.animation ='pipe-animation 1s infinite linear';
+            
+        }
+
+
+
+    const canoPosition = cano.offsetLeft;
+    const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
+
+            if (canoPosition <= 120 && canoPosition > 0 && marioPosition <= 80){
+
+                cano.style.animation = 'none'
+                cano.style.left = `${canoPosition}px`
+
+                mario.style.animation = 'none';
+                mario.style.bottom = `${canoPosition}px`; 
+
+                moeda.style.animation = 'none';
+                moeda.style.left = `${canoPosition}px`
+
+                mario.src = './game-over.png';
+                mario.style.width = '75px';
+                mario.style.marginLeft = '50px';
+
+                  demo.style.border = 'orange double 5px';
+                  document.getElementById("demo").innerHTML = 'Game Over';
+
+                clearInterval(loop);
+                
+                } 
+
+    }, 10);
+
+
+
+
+        document.addEventListener('keydown', jump);
+    
